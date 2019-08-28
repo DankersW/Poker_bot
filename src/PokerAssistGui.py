@@ -84,6 +84,7 @@ class Window(tk.Frame):
     def click_card_pool(self, button_suite_index, button_card_index):
         print(button_suite_index, button_card_index)
         #self.button_card_pool[button_suite_index][button_card_index].configure(state=tk.DISABLED)
+        
         card_destination = self.get_selected_card_destination()
         if card_destination is not None:
             card_destination[self.table_card_counter].configure(
