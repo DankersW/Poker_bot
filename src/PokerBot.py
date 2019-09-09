@@ -1,7 +1,9 @@
+from src.PokerAssistGui import PokerAssistGui
+
+
 class PokerBot:
     def __init__(self):
-        print("oke")
-        pass
+        PokerAssistGui()
 
 
 if __name__ == '__main__':
