@@ -19,6 +19,8 @@ class CardSelection:
     selected_card_destination = "table"
     card_destination_counter = 0
 
+    cards = [[], []]
+
     main_gui = None
 
     def __init__(self, master_frame, main_view):
@@ -61,23 +63,25 @@ class CardSelection:
 
     def click_card_pool(self, button_suite_index, button_card_index):
         # self.button_card_pool[button_suite_index][button_card_index].configure(state=tk.DISABLED)
-        card_destination = self.get_selected_card_destination()
-        if card_destination is not None:
+        packet_return_data = self.get_selected_card_destination()
+        if packet_return_data is not None:
+            card_destination_number, card_destination = packet_return_data
             counter = self.card_destination_counter
             card_destination[counter].configure(
                 image=self.cards_background_images[button_suite_index][button_card_index])
+            self.cards[card_destination_number].append([button_suite_index, button_card_index + 2])
             self.increment_card_clicked_counter()
-        self.main_gui.update_gui()
+        self.update_gui()
 
     def get_selected_card_destination(self):
         is_table = self.selected_card_destination == "table" and self.table_card_counter < self.NUMBER_OF_CARDS_ON_TABLE
         is_hand = self.selected_card_destination == "hand" and self.hand_card_counter < self.NUMBER_OF_CARDS_ON_HAND
         if is_table:
             self.card_destination_counter = self.table_card_counter
-            return self.button_card_table
+            return 0, self.button_card_table
         elif is_hand:
             self.card_destination_counter = self.hand_card_counter
-            return self.button_card_hand
+            return 1, self.button_card_hand
         else:
             return None
 
@@ -104,7 +108,8 @@ class CardSelection:
         self.table_card_counter = 0
         for i in range(self.NUMBER_OF_CARDS_ON_TABLE):
             self.button_card_table[i].configure(image=self.empty_card)
-        self.main_gui.update_gui()
+        self.cards[0] = list()
+        self.update_gui()
 
     def init_hand_cards_frame(self, frame):
         label = tk.Label(frame, text="Cards On Hand  ")
@@ -122,7 +127,12 @@ class CardSelection:
         self.hand_card_counter = 0
         for i in range(self.NUMBER_OF_CARDS_ON_HAND):
             self.button_card_hand[i].configure(image=self.empty_card)
-        self.main_gui.update_gui()
+        self.cards[1] = list()
+        self.update_gui()
+
+    def update_gui(self):
+        self.main_gui.update_gui(self.cards[1], self.cards[0])
+
 
 if __name__ == '__main__':
     app = CardSelection

@@ -1,9 +1,12 @@
 from src.gui.CardSelection import CardSelection
+from src.HandStrength import HandStrength
 
 import tkinter as tk
 
 
 class Window(tk.Frame):
+
+    strength_label = None
 
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
@@ -25,7 +28,7 @@ class Window(tk.Frame):
     def init_control_frame(self, frame):
         card_pool_frame = tk.Frame(frame)
         game_information_frame = tk.LabelFrame(frame, text="game information frame")
-        recommended_actions_frame = tk.LabelFrame(frame, text="recommendated actions frame")
+        recommended_actions_frame = tk.LabelFrame(frame, text="recommended actions frame")
 
         card_pool_frame.pack(fill="both", expand="yes")
         game_information_frame.pack(fill="both", expand="yes")
@@ -43,13 +46,20 @@ class Window(tk.Frame):
         CardSelection(frame, self)
 
     def init_game_information_frame(self, frame):
-        pass
+        label = tk.Label(frame, text="Hand strength: ")
+        label.pack()
+        self.strength_label = tk.Label(frame, text="")
+        self.strength_label.pack()
 
     def init_recommended_actions_frame(self, frame):
         pass
 
-    def update_gui(self):
-        print("it works ... updating")
+    def update_gui(self, cards_on_hand, cards_on_table):
+        printing = True
+        hand_strength = HandStrength()
+        result = hand_strength(cards_on_hand, cards_on_table, printing)
+        print(result)
+        self.strength_label.config(text=result)
 
 
 class PokerAssistGui:
