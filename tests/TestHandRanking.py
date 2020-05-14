@@ -2,7 +2,7 @@ import unittest
 from src.HandStrength import HandStrength
 
 
-class TestSum(unittest.TestCase):
+class TestHandRanking(unittest.TestCase):
     hand_strength_ = HandStrength()
 
     def test_straight_flush(self):
